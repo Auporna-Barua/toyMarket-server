@@ -24,7 +24,13 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-
+    const carsCollection = client.db("car-world").collection("all-cars");
+    // read all cars's data by api
+    app.get("/allCars", async (req, res) => {
+      const cars = carsCollection.find();
+      const result = await cars.toArray();
+      res.send(result);
+    });
     // this is for testing need to remove when work done
     app.get("/", (req, res) => {
       res.send("the server is running");
