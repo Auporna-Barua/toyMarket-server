@@ -65,6 +65,13 @@ async function run() {
       const result = await allToyCollection.insertOne(toy);
       res.send(result);
     });
+    // get all toy api
+    app.get("/allToy", async (req, res) => {
+      const cursor = allToyCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // this is for testing need to remove when work done
     app.get("/", (req, res) => {
       res.send("the server is running");
