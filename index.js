@@ -78,6 +78,15 @@ async function run() {
       const result = await allToyCollection.findOne(query);
       res.send(result);
     });
+    // get specific user allData
+    app.get("/myToys/:email", async (req, res) => {
+      console.log(req.params.email);
+      const result = await allToyCollection
+        .find({ seller: req.params.email })
+        .toArray();
+      res.send(result);
+    });
+
     // this is for testing need to remove when work done
     app.get("/", (req, res) => {
       res.send("the server is running");
