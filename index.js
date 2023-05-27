@@ -39,11 +39,28 @@ async function run() {
       const result = await carsCollection.findOne(query);
       res.send(result);
     });
+
+    // all toy databaseCollection
+    const allToyCollection = client
+      .db("allToyDB")
+      .collection("allToyCollection");
+    // indexing for search functionality
+    const indexKeys = { ToyName: 1 };
+    const indexOptions = { name: "toyName" };
     // this is for testing need to remove when work done
     app.get("/", (req, res) => {
       res.send("the server is running");
     });
-
+    const result = await allToyCollection.createIndex(indexKeys, indexOptions);
+    app.get("/searchToy/:text", async (req, res) => {
+      const searchText = req.params.text;
+      const result = await allToyCollection
+        .find({
+          $or: [{ ToyName: { $regex: searchText, $options: "i" } }],
+        })
+        .toArray();
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
