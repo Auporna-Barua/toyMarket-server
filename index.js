@@ -93,7 +93,22 @@ async function run() {
       const result = await allToyCollection.findOne(query);
       res.send(result);
     });
+    // Update specific data
+    app.put("/updateToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const body = req.body;
+      const filter = { _id: new ObjectId(id) };
 
+      const updateData = {
+        $set: {
+          Price: body.price,
+          quantity: body.quantity,
+          description: body.description,
+        },
+      };
+      const result = await allToyCollection.updateOne(filter, updateData);
+      res.send(result);
+    });
     // this is for testing need to remove when work done
     app.get("/", (req, res) => {
       res.send("the server is running");
