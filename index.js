@@ -109,6 +109,13 @@ async function run() {
       const result = await allToyCollection.updateOne(filter, updateData);
       res.send(result);
     });
+    //
+    app.delete("/deleteToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await allToyCollection.deleteOne(query);
+      res.send(result);
+    });
     // this is for testing need to remove when work done
     app.get("/", (req, res) => {
       res.send("the server is running");
